@@ -3,7 +3,7 @@ from Armor_Detection import ArmorDetector, DetectResult
 
 def main():
     # 读取测试图像
-    img = cv2.imread("./selected_armor_img/193.jpg")
+    img = cv2.imread("./selected_armor_img/issue_red_001.jpg")
 
     if img is None:
         print("Failed to load image.")
