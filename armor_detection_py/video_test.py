@@ -3,7 +3,7 @@ from Armor_Detection import ArmorDetector
 
 def main():
     # 1. 打开输入 MP4 视频
-    cap = cv2.VideoCapture("./video/vid_move_003.mp4")  # ← 换成你的视频路径
+    cap = cv2.VideoCapture("./video/vid_move_001.mp4")  # ← 换成你的视频路径
     if not cap.isOpened():
         print("Failed to open video.")
         return
@@ -26,7 +26,7 @@ def main():
             break
 
         # Step 1: 灰度+阈值处理
-        gauss_img = detector._ArmorDetector__pre_process_gray_thresh(frame)
+        gauss_img = detector._ArmorDetector__pre_process_red(frame)
 
         # Step 2: 检测灯条
         light_bars = detector._ArmorDetector__find_light_bars(gauss_img)

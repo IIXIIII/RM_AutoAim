@@ -15,7 +15,7 @@ class ArmorDetector:
     def __init__(self, binary_threshold: float = 220.0) -> None:
         self.binary_threshold = binary_threshold
 
-    def __pre_process_b(self, bgr: np.ndarray):
+    def __pre_process_blue(self, bgr: np.ndarray):
         #颜色通道分离
         b,g,r = cv2.split(bgr)
 
@@ -43,6 +43,14 @@ class ArmorDetector:
         _, binary = cv2.threshold(gray, int(self.binary_threshold), 255, cv2.THRESH_BINARY)
         gauss_img = cv2.GaussianBlur(binary, (5, 5), 0)
 
+        return gauss_img
+
+    def __pre_process_red(self, bgr: np.ndarray):
+        red = bgr[:, :, 2]  # BGR 中 R 是第 2 个通道
+
+        # 对红色通道进行阈值处理：R > threshold → 白色（255），否则黑色（0）
+        _, binary = cv2.threshold(red, self.binary_threshold, 255, cv2.THRESH_BINARY)
+        gauss_img = cv2.GaussianBlur(binary, (5, 5), 0)
         return gauss_img
 
     '''
