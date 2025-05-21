@@ -3,14 +3,14 @@ from Armor_Detection import ArmorDetector, DetectResult
 
 def main():
     # 读取测试图像
-    img = cv2.imread("./selected_armor_img/466.jpg")
+    img = cv2.imread("./selected_armor_img/193.jpg")
 
     if img is None:
         print("Failed to load image.")
         return
 
     # 创建装甲板检测器
-    detector = ArmorDetector(150)
+    detector = ArmorDetector(200)
 
     gauss_img = detector._ArmorDetector__pre_process_red(img)
     cv2.imwrite("1_preprocessed.jpg", gauss_img)  # ← 输出预处理图像

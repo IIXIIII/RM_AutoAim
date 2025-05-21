@@ -146,7 +146,7 @@ class ArmorDetector:
                 distance between = 2.5 * len
                 '''
                 dist = abs(x1-x2)
-                if not (dist<((h1+h2)/2)*6):
+                if not (dist<((h1+h2)/2)*4):
                     continue
                 if not(dist>((h1+h2)/2)*0.4):
                     continue

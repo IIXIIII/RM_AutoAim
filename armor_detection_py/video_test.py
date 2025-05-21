@@ -53,7 +53,7 @@ def main():
     cap.release()
     out.release()
     cv2.destroyAllWindows()
-    print("✅ Done! Output saved to output_processed.mp4")
+    print(" Done! Output saved to output_processed.mp4")
 
 if __name__ == "__main__":
     main()
