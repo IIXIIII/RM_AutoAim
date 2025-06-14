@@ -1,5 +1,5 @@
 import cv2
-from Armor_Detection import ArmorDetector, DetectResult
+from det import ArmorDetector, DetectResult
 
 def main():
     # 读取测试图像

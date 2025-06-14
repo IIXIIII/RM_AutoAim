@@ -1,5 +1,5 @@
 import cv2
-from Armor_Detection import ArmorDetector
+from det import ArmorDetector
 
 def main():
     # 1. 打开输入 MP4 视频

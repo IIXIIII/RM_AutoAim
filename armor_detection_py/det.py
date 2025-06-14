@@ -1,6 +1,13 @@
 '''
 @Description : Armor Detection pipline
 '''
+import itertools
+
+import argparse
+import itertools
+import pathlib
+from typing import List, Tuple
+
 import cv2
 import numpy as np
 
@@ -159,6 +166,7 @@ class ArmorDetector:
     def __number_identification(self, bgr: np.ndarray, armor_xyxy:list) -> list:
         pass
 
+    #RETURN THE LENGTH OF THE LIGHT BAR
     def detection(self, bgr:np.ndarray) -> list:
         guess_img = self.__pre_process(bgr)
         light_bar = self.__find_light_bars(guess_img)
@@ -166,58 +174,7 @@ class ArmorDetector:
 
         res =[]
         for armor_xyxy in armors:
-            num = self.__number_identification(armor_xyxy)
+            num = self.__number_identification(bgr,armor_xyxy)
             res.append(DetectResult(armor_xyxy,num))
-        return res
+        return armors
 
-
-# ---------------------------------------------------------------------------
-def main():
-    ap = argparse.ArgumentParser()
-    ap.add_argument("--source", default="0", help="video/rtsp path or camera index")
-    ap.add_argument("--enemy", default="blue", choices=["blue", "red", "gray"])
-    ap.add_argument("--show", action="store_true", help="visualise result")
-    opt = ap.parse_args()
-
-    src = 0 if opt.source.isdigit() else opt.source
-    cap = cv2.VideoCapture(src)
-    if not cap.isOpened():
-        raise SystemExit(f"❌ Cannot open source {opt.source}")
-
-    detector = ArmorDetector(enemy_colour=opt.enemy)
-    fourcc = cv2.VideoWriter_fourcc(*"mp4v")
-    out_path = pathlib.Path("armor_out.mp4")
-    writer = None
-
-    while True:
-        ret, frame = cap.read()
-        if not ret:
-            break
-        results = detector.detect(frame)
-
-        if opt.show or writer is None:
-            for r in results:
-                x1, y1, x2, y2 = r.xyxy
-                cv2.rectangle(frame, (x1, y1), (x2, y2), (0, 255, 0), 2)
-                cv2.putText(frame, str(r.number), (x1, y1 - 5),
-                            cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 255, 0), 2)
-
-        if opt.show:
-            cv2.imshow("armor", frame)
-            if cv2.waitKey(1) & 0xFF == 27:
-                break
-
-        # lazy writer init once we know frame size
-        if writer is None:
-            h, w = frame.shape[:2]
-            writer = cv2.VideoWriter(str(out_path), fourcc, 30.0, (w, h))
-        writer.write(frame)
-
-    cap.release()
-    if writer:
-        writer.release()
-    cv2.destroyAllWindows()
-
-
-if __name__ == "__main__":
-    main()
